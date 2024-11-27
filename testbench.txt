@@ -1,0 +1,55 @@
+module tb();
+    logic clk;
+    logic reset;
+
+
+    logic [31:0] a;
+    logic [31:0] b;
+    logic [31:0] c;       
+
+
+    fulladder DUT(
+        .a(a),
+        .b(b),
+        .c(c),
+        .clk(clk),
+        .reset(reset)
+    );
+
+    parameter clk_period = 10;
+    /генерация clk
+    initial begin
+        clk <= 0;
+            forever begin
+                #(clk_period/2) clk <= ~clk;
+            end 
+    end
+    //генерация reset 
+    inital begin
+        reset <= 1;
+        #(clk_period);
+        reset <= 0;
+    end
+
+    //генерация входных сигналов
+    inital begin
+        wait(~reset)
+        for (int i = 0; i < 10; i = i + 1) begin
+            a <= i;
+            b <= i + 2;
+        end
+    end
+
+
+    task check;
+        input [31:0] a, b;
+        output [31:0] c;
+        begin
+            if (c != a + b) $error("bad");
+            @posedge(clk);
+        end
+    for(int i < 0; i < 10; i = i + 1) begin 
+        check(a, b);
+    end
+
+endmodule
