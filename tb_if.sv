@@ -1,20 +1,26 @@
-interface tb_if (input clk); 
-    logic [31:0] a = 0;
-    logic [31:0] b = 0;
+interface tb_if (input wire clk); 
+
     logic resetn;
-    //reset 
+    //     DPI-начало 
+    import "DPI-C" context task test();
+    export "DPI-C" task seq_creator;
+    export "DPI-C" task res;
+    c_pkg::base_tr_gen local_base_tr_gen;//handle на базовый класс     
+    
     task res();
 	resetn <= 0;
- 	repeat(2) @(posedge clk); 
+ 	repeat(1) @(posedge clk); 
 	resetn <= 1;
     endtask
     
-    
-    task in(input logic [31:0] a_value, input logic [31:0] b_value);
-        @(posedge clk);
-        a <= a_value;
-	b <= b_value;
+    task sv_test();
+        test();    
+    endtask
+        
+    task seq_creator(int a, int b);
+        local_base_tr_gen.tr_gen(a, b);
     endtask
     
+
     
 endinterface:tb_if

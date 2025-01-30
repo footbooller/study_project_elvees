@@ -5,12 +5,9 @@ module fulladder(
   input wire resetn,
   
   output wire [31:0] sum
-  //output logic carry_out
 );
   reg [31:0] b_1;
   reg [31:0] a_1;
-  //s = a + b;
-  //carry_out = (a ^ b) | (a ^ carry_in) | (a ^ carry_out);
   
   always@(posedge clk or negedge resetn) begin
     if (~resetn) begin
@@ -25,6 +22,5 @@ module fulladder(
   
 //  assign sum = a_1 + (b_1 & 32'h5);
   assign sum = a_1 + b_1;
-  
   
 endmodule 
